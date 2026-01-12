@@ -3,6 +3,11 @@ import Navbar from '../components/Navbar';
 import { Link } from 'react-router-dom';
 
 const About = () => {
+    // 1. Cek token login
+    const token = localStorage.getItem('token');
+    // 2. Tentukan link tujuan tombol bawah
+    const destinationLink = token ? "/" : "/register";
+
     return (
         <div className="app-container">
             <Navbar />
@@ -15,6 +20,7 @@ const About = () => {
                     </p>
                 </div>
 
+                {/* Cerita Kami Section */}
                 <div className="glass-card" style={{ padding: '3rem', marginBottom: '3rem', borderRadius: '24px', position: 'relative', overflow: 'hidden' }}>
                     <div style={{ position: 'absolute', top: '-50px', right: '-50px', width: '200px', height: '200px', background: 'radial-gradient(var(--neon-blue), transparent)', opacity: 0.1, borderRadius: '50%' }}></div>
                     <div style={{ position: 'relative', zIndex: 10 }}>
@@ -29,15 +35,19 @@ const About = () => {
                     </div>
                 </div>
 
+                {/* --- BAGIAN YANG DIUBAH (GRID) --- */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem', marginBottom: '4rem' }}>
+                    
+                    {/* Kartu 1: Developer (Sebelumnya Mahasiswa) */}
                     <div className="glass-card" style={{ textAlign: 'center' }}>
-                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🎓</div>
-                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--neon-blue)' }}>Mahasiswa</h3>
+                        <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>💻</div>
+                        <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--neon-blue)' }}>Developer</h3>
                         <p style={{ color: 'var(--text-muted)' }}>
-                            Tugas akhir jadi lebih mudah tanpa pusing input data manual satu per satu. Fokus pada coding logika aplikasi Anda.
+                            Proyek portofolio   jadi lebih mudah tanpa pusing input data manual. Fokus pada coding logika aplikasi Anda.
                         </p>
                     </div>
 
+                    {/* Kartu 2: Startup */}
                     <div className="glass-card" style={{ textAlign: 'center' }}>
                         <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🚀</div>
                         <h3 style={{ fontSize: '1.5rem', marginBottom: '1rem', color: 'var(--neon-purple)' }}>Startup</h3>
@@ -46,14 +56,15 @@ const About = () => {
                         </p>
                     </div>
                 </div>
+                {/* ---------------------------------- */}
 
                 <div style={{ textAlign: 'center', animation: 'fadeIn 1s ease-out 0.5s backwards' }}>
                     <Link
-                        to="/register"
+                        to={destinationLink}
                         className="btn-neon"
                         style={{ padding: '16px 40px', fontSize: '1.2rem' }}
                     >
-                        Mulai Sekarang
+                        {token ? "Kembali ke Home" : "Mulai Sekarang"}
                     </Link>
                 </div>
             </div>

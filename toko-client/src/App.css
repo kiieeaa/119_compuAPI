@@ -27,13 +27,28 @@
   padding: 0;
 }
 
+/* App.css */
+
 body {
   font-family: 'Outfit', sans-serif;
-  background-color: var(--bg-dark);
+  background-color: var(--bg-dark); /* Fallback color */
   color: var(--text-main);
-  background-image:
-    radial-gradient(circle at 10% 20%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(188, 19, 254, 0.05) 0%, transparent 40%);
+  
+  /* PENGATURAN BACKGROUND GAMBAR */
+  background-image: 
+    /* Layer 1: Overlay gelap agar teks tetap terbaca (opsional tapi disarankan) */
+    linear-gradient(rgba(5, 5, 16, 0.6), rgba(5, 5, 16, 0.9)),
+    /* Layer 2: Gambar background Anda */
+    url('./assets/background.jpg');
+    
+  /* Agar gambar memenuhi layar dan tidak berulang */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  
+  /* Agar gambar tetap diam saat di-scroll (efek keren) */
+  background-attachment: fixed;
+  
   min-height: 100vh;
   overflow-x: hidden;
 }

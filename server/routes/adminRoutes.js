@@ -1,11 +1,23 @@
 const express = require('express');
-const { v4: uuidv4 } = require('uuid'); // Wajib import ini buat regenerate
 const Product = require('../models/Product');
 const User = require('../models/User');
 const ApiKey = require('../models/ApiKey');
 const Log = require('../models/Log');
 const verifyToken = require('../middleware/auth');
 const router = express.Router();
+
+// --- 1. FUNGSI GENERATOR KEY KHUSUS (SAMA DENGAN USER) ---
+const generateCustomKey = () => {
+    const prefix = 'compu-';
+    let numbers = '';
+    
+    // Loop 18 kali untuk 18 digit angka acak
+    for (let i = 0; i < 18; i++) {
+        numbers += Math.floor(Math.random() * 10);
+    }
+
+    return prefix + numbers;
+};
 
 // Middleware Khusus Admin
 const isAdmin = (req, res, next) => {
@@ -24,7 +36,7 @@ router.use(isAdmin);
 // 1. KELOLA PRODUK (CRUD)
 // ==========================================
 
-// GET ALL PRODUCTS (Ini yang tadi 404 di Postman)
+// GET ALL PRODUCTS
 router.get('/products', async (req, res) => {
     try {
         const products = await Product.findAll();
@@ -39,7 +51,7 @@ router.post('/products', async (req, res) => {
     try {
         const { productName, price, stock, description, image } = req.body;
 
-        // 🛡️ VALIDASI: Harga & Stok tidak boleh minus
+        // Validasi: Harga & Stok tidak boleh minus
         if (price < 0 || stock < 0) {
             return res.status(400).json({ msg: "Harga dan Stok tidak boleh kurang dari 0!" });
         }
@@ -51,12 +63,11 @@ router.post('/products', async (req, res) => {
     }
 });
 
-// UPDATE PRODUCT (DENGAN VALIDASI MINUS)
+// UPDATE PRODUCT
 router.put('/products/:id', async (req, res) => {
     try {
         const { price, stock } = req.body;
 
-        // 🛡️ VALIDASI: Cek kalau ada update harga/stok, pastikan gak minus
         if ((price !== undefined && price < 0) || (stock !== undefined && stock < 0)) {
             return res.status(400).json({ msg: "Harga dan Stok tidak boleh kurang dari 0!" });
         }
@@ -130,7 +141,6 @@ router.get('/users/:id/logs', async (req, res) => {
 
 router.get('/keys', async (req, res) => {
     try {
-        // Include User biar nama pemilik muncul
         const keys = await ApiKey.findAll({
             include: [{ 
                 model: User,
@@ -143,27 +153,28 @@ router.get('/keys', async (req, res) => {
     }
 });
 
-// REGENERATE KEY USER LAIN (Ini yang tadi 404 di Postman)
+// REGENERATE KEY USER LAIN (ADMIN ACTION)
 router.put('/keys/:id/regenerate', async (req, res) => {
     try {
-        // Cari key berdasarkan ID (bukan userId, tapi ID tabel api_keys)
+        // Cari key berdasarkan ID tabel api_keys
         const keyRecord = await ApiKey.findByPk(req.params.id);
         
         if (!keyRecord) return res.status(404).json({ msg: "API Key tidak ditemukan" });
 
-        const newKeyString = uuidv4().replace(/-/g, '') + uuidv4().replace(/-/g, '');
+        // --- BAGIAN INI YANG DIUBAH (PAKAI FUNGSI CUSTOM) ---
+        const newKeyString = generateCustomKey();
+        // ----------------------------------------------------
 
         await keyRecord.update({ key: newKeyString });
 
-        // Catat Log Admin melakukan aksi ini (Opsional, tapi bagus buat audit)
-        // Kita catat atas nama User pemilik key saja biar muncul di monitor dia
+        // Catat Log: Admin me-reset key user ini
         await Log.create({
             method: 'UPDATE',
             endpoint: 'ADMIN_REGENERATE_KEY',
             statusCode: 200,
             responseTime: 0,
             userAgent: 'Admin Action',
-            userId: keyRecord.userId
+            userId: keyRecord.userId // Log dicatat di history user tersebut
         });
 
         res.json({ msg: "Key berhasil di-reset oleh Admin", apiKey: newKeyString });
