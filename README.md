@@ -1,9 +1,6 @@
 login admin
 <img width="2559" height="1360" alt="Screenshot 2026-01-12 231136" src="https://github.com/user-attachments/assets/d2328c63-7f6a-433f-a5a8-370c3200afd7" />
-halaman home admin
-<img width="2559" height="1361" alt="Screenshot 2026-01-12 231349" src="https://github.com/user-attachments/assets/d4010473-ba31-48d7-af2e-f2e7a2bb0e7b" />
-tambah produk
-<img width="2559" height="1357" alt="Screenshot 2026-01-12 231731" src="https://github.com/user-attachments/assets/3a44bc36-cc15-402b-9697-3cf16fcd4f56" />
+
 crud produk
 <img width="2559" height="1358" alt="Screenshot 2026-01-12 231804" src="https://github.com/user-attachments/assets/8c09ad9b-7631-4360-9adf-bd81380a380a" />
 rud user dihalaman admin
