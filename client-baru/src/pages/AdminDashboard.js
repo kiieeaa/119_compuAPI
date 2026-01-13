@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom'; // Tambahkan Link
 
 const AdminDashboard = () => {
     const navigate = useNavigate();
@@ -197,6 +197,14 @@ const AdminDashboard = () => {
                                 {/* TAB PRODUCTS */}
                                 {tab === 'products' && (
                                     <div style={{ padding: '2rem' }}>
+                                        
+                                        {/* TOMBOL LIHAT CATALOG DI SINI */}
+                                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1.5rem' }}>
+                                            <Link to="/docs" className="btn-neon secondary" style={{ fontSize: '0.9rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                📄 Lihat Katalog
+                                            </Link>
+                                        </div>
+
                                         <div style={{ marginBottom: '2rem', paddingBottom: '2rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
                                             <h3 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', color: 'var(--neon-green)' }}>{isEditing ? '✏️ Edit Product' : '✨ Add New Product'}</h3>
                                             <form onSubmit={handleSaveProduct} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>

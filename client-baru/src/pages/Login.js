@@ -15,7 +15,7 @@ const Login = () => {
             localStorage.setItem('token', res.data.accessToken);
             localStorage.setItem('role', res.data.role);
             if (res.data.role === 'admin') navigate('/admin-dashboard');
-            else navigate('/dashboard');
+            else navigate('/');
         } catch (error) {
             alert("Email atau password salah!");
         }

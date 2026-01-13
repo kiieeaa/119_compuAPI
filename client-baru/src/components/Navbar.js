@@ -25,11 +25,19 @@ const Navbar = () => {
     return (
         <nav className={`navbar ${scrolled ? 'scrolled' : ''}`}>
             <div className="nav-container">
-                {/* LOGO */}
-                <Link to="/" className="nav-logo">
-                    <div className="logo-box">C</div>
-                    <span>CompuAPI</span>
-                </Link>
+                
+                {/* LOGO LOGIC: Kalau Admin diem aja (div), kalau User ke Home (Link) */}
+                {role === 'admin' ? (
+                    <div className="nav-logo" style={{ cursor: 'default' }}>
+                        <div className="logo-box">C</div>
+                        <span>CompuAPI</span>
+                    </div>
+                ) : (
+                    <Link to="/" className="nav-logo">
+                        <div className="logo-box">C</div>
+                        <span>CompuAPI</span>
+                    </Link>
+                )}
 
                 {/* MENU DESKTOP */}
                 <div className="nav-links">
